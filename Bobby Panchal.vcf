@@ -1,0 +1,8 @@
+BEGIN:VCARD
+VERSION:3.0
+PRODID:-//Apple Inc.//macOS 15.0//EN
+N:Panchal;Bobby;;;
+FN:Bobby Panchal
+EMAIL;type=INTERNET;type=HOME;type=pref:bobbypanchal@me.com
+TEL;type=CELL;type=VOICE;type=pref:+447891026930
+END:VCARD
