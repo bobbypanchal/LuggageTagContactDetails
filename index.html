@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luggage</title>
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
   </head>
   <body>
   <script>
     window.onload = function webhook() {
       var request = new XMLHttpRequest();
-      request.open("POST", "https://webhook.site/fada4779-826a-4b24-beef-46d67caf94c0");
+      request.open("POST", "https://ha.bobbypanchal.co.uk:8123/api/webhook/-9uqvgGqmPfE3fzxcU0ueJY5e");
 
       request.setRequestHeader('Content-type', 'application/json');
 
@@ -19,7 +19,7 @@
 
       request.send(JSON.stringify(params));
 
-     window.location.href = "http://luggage.bobbypanchal.co.uk/contact.vcf";
+     window.location.href = "https://luggage.bobbypanchal.co.uk/contact.vcf";
       
     }
     
