@@ -10,8 +10,7 @@
     test
 
   <script>
-    
-    function webhook() {
+    window.onload = function webhook() {
       var request = new XMLHttpRequest();
       request.open("POST", "http://ha.bobbypanchal.co.uk:8123/api/webhook/-9uqvgGqmPfE3fzxcU0ueJY5e");
 
@@ -22,8 +21,6 @@
 
       request.send(JSON.stringify(params));
     }
-
-      document.addEventListener("load", webhook);
     
   </script>
 
