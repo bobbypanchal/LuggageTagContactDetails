@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luggage</title>
+  </head>
+  <body>
+    test
+  </body>
+
+  <script>
+
+    object.addEventListener("load", webhook);
+    
+    function webhook() {
+      var request = new XMLHttpRequest();
+      request.open("POST", "http://ha.bobbypanchal.co.uk:8123/api/webhook/-9uqvgGqmPfE3fzxcU0ueJY5e");
+
+      request.setRequestHeader('Content-type', 'application/json');
+
+      var params = {
+      }
+
+      request.send(JSON.stringify(params));
+    }
+  </script>
+</html>
