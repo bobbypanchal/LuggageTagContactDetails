@@ -5,20 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Card</title>
     <style>
+        :root {
+    --primary-color: #007aff;
+    --bg-color: #121212;
+    --card-bg-color: #1e1e1e;
+}
+
+ 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #121212;
+            background-color: var(--bg-color);
             color: #f4f4f9;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
         }
         .contact-card {
             width: 320px;
-            background: #1e1e1e;
+            background: var(--card-bg-color);
             border-radius: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
             padding: 20px;
@@ -58,8 +66,151 @@
         .contact-card a:hover {
             background-color: #005bb5;
         }
+
+        /* Updated Dropdown Style */
+        select {
+            background-color: #1e1e1e; /* Matches the contact card background */
+            color: #fff; /* White text for better contrast */
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 20px;
+            font-size: 14px;
+            appearance: none; /* Remove default dropdown styling */
+            cursor: pointer;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+        select:focus {
+            border-color: #005bb5; /* Darker blue on focus */
+            outline: none; /* Remove default outline */
+            background-color: #121212; /* Keep dark background on focus */
+        }
+        /* Custom dropdown arrow */
+        select::-ms-expand {
+            display: none; /* Remove default dropdown arrow for IE */
+        }
+        select option {
+            background-color: #1e1e1e;
+            color: #fff;
+        }
+        select option:hover {
+            background-color: #007aff; /* Blue highlight on hover */
+        }
+
+        /* Added Padding between dropdown and contact card */
+        select {
+            margin-bottom: 30px; /* Adds space between dropdown and the contact card */
+        }
+
+      @media (max-width: 600px) {
+    .contact-card {
+        width: 95%; /* Make it even smaller on very small screens */
+        padding: 15px; /* Reduce padding */
+    }
+}
     </style>
     <script>
+
+        const translations = {
+            en: {
+                name: "Mr Bobby Panchal",
+                location: "Northamptonshire, United Kingdom",
+                mobile: "Mobile",
+                email: "Email",
+                call: "Call",
+                emailLink: "Email"
+            },
+            zh: {
+                name: "鲍比·潘查尔",
+                location: "英格兰，北安普敦郡",
+                mobile: "手机",
+                email: "电子邮件",
+                call: "打电话",
+                emailLink: "发邮件"
+            },
+            hi: {
+                name: "श्री बॉबी पंचाल",
+                location: "नॉर्थम्पटोनशायर, यूनाइटेड किंगडम",
+                mobile: "मोबाइल",
+                email: "ईमेल",
+                call: "कॉल करें",
+                emailLink: "ईमेल करें"
+            },
+            es: {
+                name: "Sr. Bobby Panchal",
+                location: "Northamptonshire, Reino Unido",
+                mobile: "Móvil",
+                email: "Correo electrónico",
+                call: "Llamar",
+                emailLink: "Enviar correo"
+            },
+            fr: {
+                name: "M. Bobby Panchal",
+                location: "Northamptonshire, Royaume-Uni",
+                mobile: "Mobile",
+                email: "E-mail",
+                call: "Appeler",
+                emailLink: "Envoyer un e-mail"
+            },
+            ar: {
+                name: "السيد بوبي بانشال",
+                location: "نورثامبتونشاير، المملكة المتحدة",
+                mobile: "موبايل",
+                email: "البريد الإلكتروني",
+                call: "اتصال",
+                emailLink: "أرسل بريدًا"
+            },
+            bn: {
+                name: "মিঃ ববি পাঞ্চাল",
+                location: "নর্থাম্পটনশায়ার, যুক্তরাজ্য",
+                mobile: "মোবাইল",
+                email: "ইমেইল",
+                call: "কল",
+                emailLink: "ইমেইল"
+            },
+            ru: {
+                name: "Мистер Бобби Панчаал",
+                location: "Нортгемптоншир, Великобритания",
+                mobile: "Мобильный",
+                email: "Электронная почта",
+                call: "Позвонить",
+                emailLink: "Написать письмо"
+            },
+            pt: {
+                name: "Sr. Bobby Panchal",
+                location: "Northamptonshire, Reino Unido",
+                mobile: "Móvel",
+                email: "Email",
+                call: "Ligar",
+                emailLink: "Enviar Email"
+            },
+            ur: {
+                name: "مسٹر بوبی پنجال",
+                location: "نارتھمپٹن شائر، برطانیہ",
+                mobile: "موبائل",
+                email: "ای میل",
+                call: "کال کریں",
+                emailLink: "ای میل کریں"
+            }
+        };
+
+        function updateLanguage(language) {
+    const selectedLang = translations[language] || translations.en;
+    document.getElementById('name').textContent = selectedLang.name;
+    document.getElementById('location').textContent = selectedLang.location;
+    document.getElementById('mobile-label').textContent = selectedLang.mobile;
+    document.getElementById('email-label').textContent = selectedLang.email;
+    document.getElementById('call-button').textContent = selectedLang.call;
+    document.getElementById('email-button').textContent = selectedLang.emailLink;
+
+
+    document.documentElement.setAttribute('lang', language);
+
+    // Save the selected language to localStorage
+    localStorage.setItem('lang', language);
+}
+
+
         async function getIpAndGeo() {
             try {
                 const response = await fetch('https://ipapi.co/json/');
@@ -67,7 +218,6 @@
                     throw new Error('Failed to fetch IP and geo location');
                 }
                 const data = await response.json();
-                // Ensure the IP address is IPv4
                 if (data && data.ip && data.ip.includes(':')) {
                     throw new Error('Received IPv6, expected IPv4');
                 }
@@ -79,43 +229,71 @@
         }
 
         window.addEventListener('load', async () => {
-            const deviceInfo = {
-                userAgent: navigator.userAgent,
-                platform: navigator.platform,
-                language: navigator.language
-            };
+    let userLang = localStorage.getItem('lang') || navigator.language.split('-')[0];
+    updateLanguage(userLang);
+    document.querySelector('#language-dropdown').value = userLang; // Set the select dropdown to the detected language
 
-            const geoInfo = await getIpAndGeo();
+    // Save the selected language to localStorage
+    localStorage.setItem('lang', userLang);
 
-            const payload = {
-                ...deviceInfo,
-                ip: geoInfo?.ip || 'Unknown',
-                city: geoInfo?.city || 'Unknown',
-                region: geoInfo?.region || 'Unknown',
-                country: geoInfo?.country_name || 'Unknown',
-                latitude: geoInfo?.latitude || 'Unknown',
-                longitude: geoInfo?.longitude || 'Unknown'
-            };
+    const deviceInfo = {
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        language: navigator.language
+    };
 
-            fetch('https://ha.bobbypanchal.co.uk:8123/api/webhook/-9uqvgGqmPfE3fzxcU0ueJY5e', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            }).catch(err => console.error('Webhook failed:', err));
-        });
+    const geoInfo = await getIpAndGeo();
+    const payload = {
+        ...deviceInfo,
+        ip: geoInfo?.ip || 'Unknown',
+        city: geoInfo?.city || 'Unknown',
+        region: geoInfo?.region || 'Unknown',
+        country: geoInfo?.country_name || 'Unknown',
+        latitude: geoInfo?.latitude || 'Unknown',
+        longitude: geoInfo?.longitude || 'Unknown'
+    };
+
+    fetch('https://ha.bobbypanchal.co.uk:8123/api/webhook/-9uqvgGqmPfE3fzxcU0ueJY5e', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    }).catch(err => console.error('Webhook failed:', err));
+});
+
+        const avatar = document.querySelector('.avatar');
+const userName = "Mr Bobby Panchal"; // This would come from translations
+const initials = userName.split(" ").map(name => name[0]).join('');
+avatar.textContent = initials; // Shows 'BP'
+
     </script>
 </head>
 <body>
+    <label for="language-dropdown" id="language-label">Select Language</label>
+<select id="language-dropdown" aria-labelledby="language-label" onchange="updateLanguage(this.value)">
+
+        <option value="en">English</option>
+        <option value="zh">中文 (Chinese)</option>
+        <option value="hi">हिन्दी (Hindi)</option>
+        <option value="es">Español (Spanish)</option>
+        <option value="fr">Français (French)</option>
+        <option value="ar">العربية (Arabic)</option>
+        <option value="bn">বাংলা (Bengali)</option>
+        <option value="ru">Русский (Russian)</option>
+        <option value="pt">Português (Portuguese)</option>
+        <option value="ur">اردو (Urdu)</option>
+    </select>
+
     <div class="contact-card">
         <div class="avatar">BP</div>
-        <h1>Mr Bobby Panchal</h1>
-        <p>Northamptonshire, United Kingdom</p>
-        <p><strong>Mobile:</strong> <a href="tel:+447891026930">+44 7891 026930</a></p>
-        <p><strong>Email:</strong> <a href="mailto:bobbypanchal@me.com">bobbypanchal@me.com</a></p>
-        <a href="tel:+447891026930">Call</a>
-        <a href="mailto:bobbypanchal@me.com">Email</a>
+        <h2 id="name">Mr Bobby Panchal</h2>
+        <p id="location">Northamptonshire, United Kingdom</p>
+        <p><strong id="mobile-label">Mobile:</strong> <a href="tel:+447891026930" aria-label="Call Bobby Panchal at +44 7891 026930">+44 7891 026930</a></p>
+        <p><strong id="email-label">Email:</strong> <a href="mailto:bobbypanchal@me.com" aria-label="Email Bobby Panchal at bobbypanchal@me.com">bobbypanchal@me.com</a></p>
+        <a id="call-button" href="tel:+447891026930" aria-label="Call Bobby Panchal at +44 7891 026930">Call Bobby</a>
+<a id="email-button" href="mailto:bobbypanchal@me.com" aria-label="Email Bobby Panchal at bobbypanchal@me.com">Email Bobby</a>
+
     </div>
 </body>
 </html>
