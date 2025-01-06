@@ -10,15 +10,18 @@
     --primary-color: #007aff;
     --text-color-dark: #f4f4f9;
     --text-color-light: #333333;
-    --bg-color: #121212; /* Dark theme background */
-    --secondary-bg-color: #ffffff; /* Light theme background */
+    --bg-color-dark: #121212; /* Dark theme background */
+    --bg-color-light: #f4f4f9; /* Light theme background */
     --card-bg-color-dark: #1e1e1e;
     --card-bg-color-light: #f9f9f9;
     --strong-color-light: #005bb5;
-    --select-bg-color-light: #ffffff;
     --select-bg-color-dark: #1e1e1e;
-    --location-text-color-dark: #ccc;
-    --location-text-color-light: #555;
+    --select-bg-color-light: #ffffff;
+    --select-text-color-dark: #f4f4f9;
+    --select-text-color-light: #333333;
+    --select-border-color-dark: #444;
+    --select-border-color-light: #ccc;
+    --mobile-breakpoint: 600px; /* Mobile breakpoint */
 }
 
 /* General Styles */
@@ -32,28 +35,13 @@ body {
     height: 100vh;
     flex-direction: column;
     transition: background-color 0.3s, color 0.3s;
-    background-color: var(--bg-color);
+    background-color: var(--bg-color-dark);
     color: var(--text-color-dark);
 }
 
 body[data-theme="light"] {
-    background-color: var(--secondary-bg-color);
+    background-color: var(--bg-color-light);
     color: var(--text-color-light);
-}
-
-/* Strong Tag Styling */
-strong {
-    color: inherit;
-    font-weight: bold;
-}
-
-/* Light Theme Adjustments */
-body[data-theme="light"] strong {
-    color: var(--strong-color-light);
-}
-
-body[data-theme="light"] .contact-card .location {
-    color: var(--location-text-color-light);
 }
 
 /* Contact Card */
@@ -86,8 +74,8 @@ body[data-theme="light"] .contact-card {
 }
 
 .contact-card .location {
-    color: var(--location-text-color-dark);
     font-size: 14px;
+    color: var(--text-color-light);
 }
 
 .contact-card h1 {
@@ -109,6 +97,7 @@ body[data-theme="light"] .contact-card {
     text-decoration: none;
     color: #fff;
     background-color: var(--primary-color);
+    transition: background-color 0.3s;
 }
 
 .contact-card a:hover {
@@ -117,13 +106,16 @@ body[data-theme="light"] .contact-card {
 
 /* Dropdown Styles */
 select {
+    background-color: var(--select-bg-color-dark);
+    color: var(--select-text-color-dark);
+    border: 1px solid var(--select-border-color-dark);
     border-radius: 5px;
     padding: 10px;
     margin-top: 20px;
     font-size: 14px;
     appearance: none;
     cursor: pointer;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 select option {
@@ -133,13 +125,13 @@ select option {
 
 body[data-theme="light"] select {
     background-color: var(--select-bg-color-light);
-    color: #333;
-    border: 1px solid var(--primary-color);
+    color: var(--select-text-color-light);
+    border: 1px solid var(--select-border-color-light);
 }
 
 body[data-theme="light"] select option {
     background-color: #fff;
-    color: #333;
+    color: var(--select-text-color-light);
 }
 
 select option:hover {
@@ -218,7 +210,7 @@ select:focus {
 }
 
 /* Responsive Design */
-@media (max-width: 600px) {
+@media (max-width: var(--mobile-breakpoint)) {
     .contact-card {
         width: 95%;
         padding: 15px;
@@ -228,6 +220,20 @@ select:focus {
 /* Spacing for Language Dropdown */
 #language-dropdown {
     margin-bottom: 30px;
+}
+
+/* General Accessibility */
+a:focus, button:focus, select:focus {
+    outline: 3px solid var(--primary-color);
+}
+
+/* Reset styles */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
     </style>
@@ -362,14 +368,24 @@ function applyTheme(theme) {
         document.documentElement.style.setProperty('--text-color', '#f4f4f9');
         document.documentElement.style.setProperty('--strong-color-dark', '#007aff');
         document.documentElement.style.setProperty('--select-bg-color', '#1e1e1e'); // Dark background for select
+        document.documentElement.style.setProperty('--select-text-color', '#f4f4f9'); // Text color for dark select
+        document.documentElement.style.setProperty('--select-border-color', '#444'); // Border for dark theme
     } else {
         document.documentElement.style.setProperty('--bg-color', '#f4f4f9');
         document.documentElement.style.setProperty('--card-bg-color', '#ffffff');
         document.documentElement.style.setProperty('--text-color', '#333333');
         document.documentElement.style.setProperty('--strong-color-light', '#005bb5');
         document.documentElement.style.setProperty('--select-bg-color', '#ffffff'); // Light background for select
+        document.documentElement.style.setProperty('--select-text-color', '#333333'); // Text color for light select
+        document.documentElement.style.setProperty('--select-border-color', '#ccc'); // Border for light theme
     }
+
+    const dropdown = document.getElementById('language-dropdown');
+    dropdown.style.backgroundColor = `var(--select-bg-color)`;
+    dropdown.style.color = `var(--select-text-color)`;
+    dropdown.style.borderColor = `var(--select-border-color)`;
 }
+
 
  async function getIpAndGeo() {
             try {
