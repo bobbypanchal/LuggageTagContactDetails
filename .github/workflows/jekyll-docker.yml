@@ -1,0 +1,56 @@
+name: Send Email via iCloud
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types:
+      - trigger-email
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: |
+          mkdir email-sender && cd email-sender
+          npm init -y
+          npm install nodemailer
+
+      - name: Create email script
+        run: |
+          cat <<EOL > email-sender/send-email.js
+          const nodemailer = require('nodemailer');
+
+          async function sendEmail() {
+            let transporter = nodemailer.createTransport({
+              service: 'iCloud',
+              auth: {
+                user: process.env.ICLOUD_EMAIL,
+                pass: process.env.ICLOUD_PASSWORD,
+              },
+            });
+
+            let info = await transporter.sendMail({
+              from: process.env.ICLOUD_EMAIL,
+              to: 'bobbypanchal@me.com',
+              subject: 'Webhook Triggered',
+              text: 'The webhook event was triggered successfully.',
+            });
+
+            console.log('Message sent: %s', info.messageId);
+          }
+
+          sendEmail().catch(console.error);
+          EOL
+
+      - name: Send Email
+        run: node email-sender/send-email.js
+        env:
+          ICLOUD_EMAIL: ${{ secrets.ICLOUD_EMAIL }}
+          ICLOUD_PASSWORD: ${{ secrets.ICLOUD_PASSWORD }}
