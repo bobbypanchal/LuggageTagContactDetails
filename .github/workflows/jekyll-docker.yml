@@ -34,11 +34,12 @@ jobs:
           ICLOUD_EMAIL: ${{ secrets.ICLOUD_EMAIL }}
           ICLOUD_APP_PASSWORD: ${{ secrets.ICLOUD_APP_PASSWORD }}
         run: |
+          python <<EOF
           import smtplib
           from email.mime.text import MIMEText
 
           # Email sender and recipient
-          sender = "$ICLOUD_EMAIL"
+          sender = "${{ secrets.ICLOUD_EMAIL }}"
           recipient = "bobbypanchal@me.com"
 
           # Email subject and body
@@ -53,5 +54,6 @@ jobs:
 
           # Send email via iCloud SMTP server
           with smtplib.SMTP_SSL("smtp.mail.me.com", 587) as server:
-              server.login(sender, "$ICLOUD_APP_PASSWORD")
+              server.login(sender, "${{ secrets.ICLOUD_APP_PASSWORD }}")
               server.sendmail(sender, recipient, msg.as_string())
+          EOF
