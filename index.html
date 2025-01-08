@@ -5,263 +5,351 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Card</title>
     <style>
-        :root {
-            /* Theme Colors */
-            --primary-color: #007aff;
-            --text-color-dark: #f4f4f9;
-            --text-color-light: #333333;
-            --bg-color-dark: #121212; /* Dark theme background */
-            --bg-color-light: #f4f4f9; /* Light theme background */
-            --card-bg-color-dark: #1e1e1e;
-            --card-bg-color-light: #f9f9f9;
-            --strong-color-light: #005bb5;
-            --select-bg-color-dark: #1e1e1e;
-            --select-bg-color-light: #ffffff;
-            --select-text-color-dark: #f4f4f9;
-            --select-text-color-light: #333333;
-            --select-border-color-dark: #444;
-            --select-border-color-light: #ccc;
-            --mobile-breakpoint: 600px; /* Mobile breakpoint */
-        }
+:root {
+    /* Theme Colors */
+    --primary-color: #007aff;
+    --text-color-dark: #f4f4f9;
+    --text-color-light: #333333;
+    --bg-color-dark: #121212; /* Dark theme background */
+    --bg-color-light: #f4f4f9; /* Light theme background */
+    --card-bg-color-dark: #1e1e1e;
+    --card-bg-color-light: #f9f9f9;
+    --strong-color-light: #005bb5;
+    --select-bg-color-dark: #1e1e1e;
+    --select-bg-color-light: #ffffff;
+    --select-text-color-dark: #f4f4f9;
+    --select-text-color-light: #333333;
+    --select-border-color-dark: #444;
+    --select-border-color-light: #ccc;
+    --mobile-breakpoint: 600px; /* Mobile breakpoint */
+}
 
-        /* General Styles */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-            transition: background-color 0.3s, color 0.3s;
-            background-color: var(--bg-color-dark);
-            color: var(--text-color-dark);
-        }
+/* General Styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    transition: background-color 0.3s, color 0.3s;
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
+}
 
-        body[data-theme="light"] {
-            background-color: var(--bg-color-light);
-            color: var(--text-color-light);
-        }
+body[data-theme="light"] {
+    background-color: var(--bg-color-light);
+    color: var(--text-color-light);
+}
 
-        /* Contact Card */
-        .contact-card {
-            width: 320px;
-            background: var(--card-bg-color-dark);
-            border-radius: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            text-align: center;
-            transition: background-color 0.3s, color 0.3s;
-        }
+/* Contact Card */
+.contact-card {
+    width: 320px;
+    background: var(--card-bg-color-dark);
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+}
 
-        body[data-theme="light"] .contact-card {
-            background: var(--card-bg-color-light);
-        }
+body[data-theme="light"] .contact-card {
+    background: var(--card-bg-color-light);
+}
 
-        .contact-card .avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            font-weight: bold;
-            margin: 0 auto 15px auto;
-        }
+.contact-card .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 auto 15px auto;
+}
 
-        .contact-card .location {
-            font-size: 14px;
-            color: var(--text-color-light);
-        }
+.contact-card .location {
+    font-size: 14px;
+    color: var(--text-color-light);
+}
 
-        .contact-card h1 {
-            font-size: 20px;
-            margin: 0;
-        }
+.contact-card h1 {
+    font-size: 20px;
+    margin: 0;
+}
 
-        .contact-card p {
-            margin: 5px 0;
-            font-size: 14px;
-            color: #ccc;
-        }
+.contact-card p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #ccc;
+}
 
-        .contact-card a {
-            display: block;
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 10px;
-            text-decoration: none;
-            color: #fff;
-            background-color: var(--primary-color);
-            transition: background-color 0.3s;
-        }
+.contact-card a {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #fff;
+    background-color: var(--primary-color);
+    transition: background-color 0.3s;
+}
 
-        .contact-card a:hover {
-            background-color: var(--strong-color-light);
-        }
+.contact-card a:hover {
+    background-color: var(--strong-color-light);
+}
 
-        /* Dropdown Styles */
-        select {
-            background-color: var(--select-bg-color-dark);
-            color: var(--select-text-color-dark);
-            border: 1px solid var(--select-border-color-dark);
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 20px;
-            font-size: 14px;
-            appearance: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+/* Dropdown Styles */
+select {
+    background-color: var(--select-bg-color-dark);
+    color: var(--select-text-color-dark);
+    border: 1px solid var(--select-border-color-dark);
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 20px;
+    font-size: 14px;
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
 
-        select option {
-            background-color: var(--select-bg-color-dark);
-            color: #fff;
-        }
+select option {
+    background-color: var(--select-bg-color-dark);
+    color: #fff;
+}
 
-        body[data-theme="light"] select {
-            background-color: var(--select-bg-color-light);
-            color: var(--select-text-color-light);
-            border: 1px solid var(--select-border-color-light);
-        }
+body[data-theme="light"] select {
+    background-color: var(--select-bg-color-light);
+    color: var(--select-text-color-light);
+    border: 1px solid var(--select-border-color-light);
+}
 
-        body[data-theme="light"] select option {
-            background-color: #fff;
-            color: var(--select-text-color-light);
-        }
+body[data-theme="light"] select option {
+    background-color: #fff;
+    color: var(--select-text-color-light);
+}
 
-        select option:hover {
-            background-color: var(--primary-color);
-            color: #fff;
-        }
+select option:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
 
-        select:focus {
-            border-color: var(--strong-color-light);
-            outline: none;
-            background-color: #e0e0e0;
-        }
+select:focus {
+    border-color: var(--strong-color-light);
+    outline: none;
+    background-color: #e0e0e0;
+}
 
-        /* Theme Toggle */
-        .theme-toggle-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
+/* Theme Toggle */
+.theme-toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
 
-        .theme-toggle-container label {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 25px;
-        }
+.theme-toggle-container label {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+}
 
-        .theme-toggle-container label input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+.theme-toggle-container label input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
 
-        .theme-toggle-container .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: 0.4s;
-            border-radius: 34px;
-        }
+.theme-toggle-container .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+}
 
-        .theme-toggle-container .icon {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 18px;
-            color: #fff;
-            transition: opacity 0.3s ease;
-        }
+.theme-toggle-container .icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #fff;
+    transition: opacity 0.3s ease;
+}
 
-        .theme-toggle-container .moon {
-            left: 8px;
-            opacity: 1;
-        }
+.theme-toggle-container .moon {
+    left: 8px;
+    opacity: 1;
+}
 
-        .theme-toggle-container .sun {
-            right: 8px;
-            opacity: 0;
-        }
+.theme-toggle-container .sun {
+    right: 8px;
+    opacity: 0;
+}
 
-        .theme-toggle-container input:checked + .slider {
-            background-color: var(--primary-color);
-        }
+.theme-toggle-container input:checked + .slider {
+    background-color: var(--primary-color);
+}
 
-        .theme-toggle-container input:checked + .slider .moon {
-            opacity: 0;
-        }
+.theme-toggle-container input:checked + .slider .moon {
+    opacity: 0;
+}
 
-        .theme-toggle-container input:checked + .slider .sun {
-            opacity: 1;
-        }
+.theme-toggle-container input:checked + .slider .sun {
+    opacity: 1;
+}
 
-        /* Responsive Design */
-        @media (max-width: var(--mobile-breakpoint)) {
-            .contact-card {
-                width: 95%;
-                padding: 15px;
-            }
-        }
+/* Responsive Design */
+@media (max-width: var(--mobile-breakpoint)) {
+    .contact-card {
+        width: 95%;
+        padding: 15px;
+    }
+}
 
-        /* Spacing for Language Dropdown */
-        #language-dropdown {
-            margin-bottom: 30px;
-        }
+/* Spacing for Language Dropdown */
+#language-dropdown {
+    margin-bottom: 30px;
+}
 
-        /* General Accessibility */
-        a:focus, button:focus, select:focus {
-            outline: 3px solid var(--primary-color);
-        }
+/* General Accessibility */
+a:focus, button:focus, select:focus {
+    outline: 3px solid var(--primary-color);
+}
 
-        /* Reset styles */
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+/* Reset styles */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
     </style>
     <script>
-        async function getIpAndGeo() {
-            try {
-                const response = await fetch('https://ipapi.co/json/');
-                if (!response.ok) throw new Error('Failed to fetch IP and geo location');
-                const data = await response.json();
-                return data;
-            } catch (error) {
-                console.error(error);
-                return null;
-            }
-        }
+        const translations = {
+            en: {
+                name: "Mr Bobby Panchal",
+                location: "Northamptonshire, United Kingdom",
+                mobile: "Mobile",
+                email: "Email",
+                call: "Call",
+                emailLink: "Email"
+            },
+            zh: {
+                name: "鲍比·潘查尔",
+                location: "英格兰，北安普敦郡",
+                mobile: "手机",
+                email: "电子邮件",
+                call: "打电话",
+                emailLink: "发邮件"
+            },
+            hi: {
+                name: "श्री बॉबी पंचाल",
+                location: "नॉर्थम्पटोनशायर, यूनाइटेड किंगडम",
+                mobile: "मोबाइल",
+                email: "ईमेल",
+                call: "कॉल करें",
+                emailLink: "ईमेल करें"
+            },
+            es: {
+                name: "Sr. Bobby Panchal",
+                location: "Northamptonshire, Reino Unido",
+                mobile: "Móvil",
+                email: "Correo electrónico",
+                call: "Llamar",
+                emailLink: "Enviar correo"
+            },
+            fr: {
+                name: "M. Bobby Panchal",
+                location: "Northamptonshire, Royaume-Uni",
+                mobile: "Mobile",
+                email: "E-mail",
+                call: "Appeler",
+                emailLink: "Envoyer un e-mail"
+            },
+            ar: {
+                name: "السيد بوبي بانشال",
+                location: "نورثامبتونشاير، المملكة المتحدة",
+                mobile: "موبايل",
+                email: "البريد الإلكتروني",
+                call: "اتصال",
+                emailLink: "أرسل بريدًا"
+            },
+            bn: {
+                name: "মিঃ ববি পাঞ্চাল",
+                location: "নর্থাম্পটনশায়ার, যুক্তরাজ্য",
+                mobile: "মোবাইল",
+                email: "ইমেইল",
+                call: "কল",
+                emailLink: "ইমেইল"
+            },
+            ru: {
+                name: "Мистер Бобби Панчаал",
+                location: "Нортгемптоншир, Великобритания",
+                mobile: "Мобильный",
+                email: "Электронная почта",
+                call: "Позвонить",
+                emailLink: "Написать письмо"
+            },
+            pt: {
+                name: "Sr. Bobby Panchal",
+                location: "Northamptonshire, Reino Unido",
+                mobile: "Móvel",
+                email: "Email",
+                call: "Ligar",
+                emailLink: "Enviar Email"
+            },
+            ur: {
+                name: "مسٹر بوبی پنجال",
+                location: "نارتھمپٹن شائر، برطانیہ",
+                mobile: "موبائل",
+                email: "ای میل",
+                call: "کال کریں",
+                emailLink: "ای میل کریں"
+            },
+            id: {  // Indonesian translation
+                name: "Tn. Bobby Panchal",
+                location: "Northamptonshire, Inggris Raya",
+                mobile: "Ponsel",
+                email: "Email",
+                call: "Telepon",
+                emailLink: "Kirim Email"
+    },
+    de: {
+    name: "Herr Bobby Panchal",
+    location: "Northamptonshire, Vereinigtes Königreich",
+    mobile: "Mobil",
+    email: "E-Mail",
+    call: "Anrufen",
+    emailLink: "E-Mail senden"
+}
+        };
 
         function updateLanguage(language) {
             const selectedLang = translations[language] || translations.en;
-            document.getElementById('name').textContent = selectedLang.name;
-            document.getElementById('location').textContent = selectedLang.location;
-            document.getElementById('mobile-label').textContent = selectedLang.mobile;
-            document.getElementById('email-label').textContent = selectedLang.email;
-            document.getElementById('call-button').textContent = selectedLang.call;
-            document.getElementById('email-button').textContent = selectedLang.emailLink;
+    document.getElementById('name').textContent = selectedLang.name;
+    document.getElementById('location').textContent = selectedLang.location;
+    document.getElementById('mobile-label').textContent = selectedLang.mobile;
+    document.getElementById('email-label').textContent = selectedLang.email;
+    document.getElementById('call-button').textContent = selectedLang.call;
+    document.getElementById('email-button').textContent = selectedLang.emailLink;
 
-            document.documentElement.setAttribute('lang', language);
+    document.documentElement.setAttribute('lang', language);
 
-            // Save the selected language to localStorage
-            localStorage.setItem('lang', language);
+    // Save the selected language to localStorage
+    localStorage.setItem('lang', language);
         }
 
         function toggleTheme() {
@@ -271,17 +359,69 @@
             applyTheme(newTheme);
         }
 
-        function applyTheme(theme) {
-            document.body.setAttribute('data-theme', theme);
+function applyTheme(theme) {
+    document.body.setAttribute('data-theme', theme);
+
+    if (theme === 'dark') {
+        document.documentElement.style.setProperty('--bg-color', '#121212');
+        document.documentElement.style.setProperty('--card-bg-color', '#1e1e1e');
+        document.documentElement.style.setProperty('--text-color', '#f4f4f9');
+        document.documentElement.style.setProperty('--strong-color-dark', '#007aff');
+        document.documentElement.style.setProperty('--select-bg-color', '#1e1e1e'); // Dark background for select
+        document.documentElement.style.setProperty('--select-text-color', '#f4f4f9'); // Text color for dark select
+        document.documentElement.style.setProperty('--select-border-color', '#444'); // Border for dark theme
+    } else {
+        document.documentElement.style.setProperty('--bg-color', '#f4f4f9');
+        document.documentElement.style.setProperty('--card-bg-color', '#ffffff');
+        document.documentElement.style.setProperty('--text-color', '#333333');
+        document.documentElement.style.setProperty('--strong-color-light', '#005bb5');
+        document.documentElement.style.setProperty('--select-bg-color', '#ffffff'); // Light background for select
+        document.documentElement.style.setProperty('--select-text-color', '#333333'); // Text color for light select
+        document.documentElement.style.setProperty('--select-border-color', '#ccc'); // Border for light theme
+    }
+
+    const dropdown = document.getElementById('language-dropdown');
+    dropdown.style.backgroundColor = `var(--select-bg-color)`;
+    dropdown.style.color = `var(--select-text-color)`;
+    dropdown.style.borderColor = `var(--select-border-color)`;
+}
+
+
+ async function getIpAndGeo() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch IP and geo location');
+                }
+                const data = await response.json();
+                // Ensure the IP address is IPv4
+                if (data && data.ip && data.ip.includes(':')) {
+                    throw new Error('Received IPv6, expected IPv4');
+                }
+                return data;
+            } catch (error) {
+                console.error(error);
+                return null;
+            }
         }
 
         window.addEventListener('load', async () => {
             const userLang = localStorage.getItem('lang') || navigator.language.split('-')[0];
-            updateLanguage(userLang);
-            document.querySelector('#language-dropdown').value = userLang;
+    updateLanguage(userLang);
+    document.querySelector('#language-dropdown').value = userLang;
 
-            const theme = localStorage.getItem('theme') || 'dark';
+       const theme = localStorage.getItem('theme') || 'dark';
             applyTheme(theme);
+
+
+
+
+   const deviceInfo = {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language
+            };
+
 
             const geoInfo = await getIpAndGeo();
             const payload = {
@@ -293,27 +433,7 @@
                 region: geoInfo?.region || 'Unknown',
                 country: geoInfo?.country_name || 'Unknown',
                 latitude: geoInfo?.latitude || 'Unknown',
-                longitude: geoInfo?.longitude || 'Unknown',
-                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                screenDimensions: {
-                    width: window.screen.width,
-                    height: window.screen.height
-                },
-                browserDetails: {
-                    appName: navigator.appName,
-                    appVersion: navigator.appVersion
-                },
-                connectionType: navigator.connection?.effectiveType || 'Unknown',
-                userPreferences: {
-                    selectedLanguage: userLang,
-                    selectedTheme: theme
-                },
-                sessionStart: new Date().toISOString(),
-                referrer: document.referrer,
-                orientation: screen.orientation?.type || 'Unknown',
-                accessibility: {
-                    prefersReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches
-                }
+                longitude: geoInfo?.longitude || 'Unknown'
             };
 
             fetch('https://frosty-resonance-2301.bobbypanchal.workers.dev/', {
@@ -331,11 +451,12 @@
     <label>
         <input type="checkbox" id="theme-toggle" onchange="toggleTheme()" aria-label="Toggle theme">
         <span class="slider">
-            <span class="icon moon">&#9790;</span>
-            <span class="icon sun">&#9733;</span>
+            <span class="icon moon">&#9790;</span> <!-- Moon icon for dark mode -->
+            <span class="icon sun">&#9733;</span> <!-- Sun icon for light mode -->
         </span>
     </label>
 </div>
+
 
 <label for="language-dropdown" id="language-label">Select Language</label>
 <select id="language-dropdown" aria-labelledby="language-label" onchange="updateLanguage(this.value)">
@@ -353,14 +474,14 @@
     <option value="de">Deutsch (German)</option>
 </select>
 
-<div class="contact-card">
-    <div class="avatar">BP</div>
-    <h2 id="name">Mr Bobby Panchal</h2>
-    <p id="location" class="location">Northamptonshire, United Kingdom</p>
-    <p><strong id="mobile-label">Mobile:</strong> <a href="tel:+447891026930" aria-label="Call Bobby Panchal at +44 7891 026930">+44 7891 026930</a></p>
-    <p><strong id="email-label">Email:</strong> <a href="mailto:bobbypanchal@me.com" aria-label="Email Bobby Panchal at bobbypanchal@me.com">bobbypanchal@me.com</a></p>
-    <a id="call-button" href="tel:+447891026930" aria-label="Call Bobby Panchal at +44 7891 026930">Call Bobby</a>
-    <a id="email-button" href="mailto:bobbypanchal@me.com" aria-label="Email Bobby Panchal at bobbypanchal@me.com">Email Bobby</a>
-</div>
+    <div class="contact-card">
+        <div class="avatar">BP</div>
+        <h2 id="name">Mr Bobby Panchal</h2>
+        <p id="location" class="location">Northamptonshire, United Kingdom</p>
+        <p><strong id="mobile-label">Mobile:</strong> <a href="tel:+447891026930" aria-label="Call Bobby Panchal at +44 7891 026930">+44 7891 026930</a></p>
+        <p><strong id="email-label">Email:</strong> <a href="mailto:bobbypanchal@me.com" aria-label="Email Bobby Panchal at bobbypanchal@me.com">bobbypanchal@me.com</a></p>
+        <a id="call-button" href="tel:+447891026930" aria-label="Call Bobby Panchal at +44 7891 026930">Call Bobby</a>
+        <a id="email-button" href="mailto:bobbypanchal@me.com" aria-label="Email Bobby Panchal at bobbypanchal@me.com">Email Bobby</a>
+    </div>
 </body>
 </html>
