@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install smtplib email pyyaml
+          pip install pyyaml
 
       - name: Extract payload
         id: extract-payload
