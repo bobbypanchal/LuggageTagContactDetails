@@ -432,8 +432,30 @@ function applyTheme(theme) {
                 city: geoInfo?.city || 'Unknown',
                 region: geoInfo?.region || 'Unknown',
                 country: geoInfo?.country_name || 'Unknown',
-                latitude: geoInfo?.latitude || 'Unknown',
-                longitude: geoInfo?.longitude || 'Unknown'
+                screenResolution: `${window.screen.width}x${window.screen.height}`,
+                windowResolution: `${window.innerWidth}x${window.innerHeight}`,
+                devicePixelRatio: window.devicePixelRatio || 1,
+                isTouchDevice: 'ontouchstart' in window,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                time: new Date().toISOString(),
+                localeDateString: new Date().toLocaleDateString(),
+                cookiesEnabled: navigator.cookieEnabled,
+                localStorageEnabled: 'localStorage' in window,
+                sessionStorageEnabled: 'sessionStorage' in window,
+                connectionType: navigator.connection?.type || 'Unknown',
+                downlink: navigator.connection?.downlink || 'Unknown',
+                effectiveType: navigator.connection?.effectiveType || 'Unknown',
+                memoryUsed: performance.memory?.usedJSHeapSize || 'Unknown',
+                memoryTotal: performance.memory?.totalJSHeapSize || 'Unknown',
+                pageLoadTime: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart || 'Unknown',
+                referrer: document.referrer || 'None',
+                theme: localStorage.getItem('theme') || 'dark',
+                selectedLanguage: localStorage.getItem('lang') || 'en',
+                installedPlugins: Array.from(navigator.plugins).map(plugin => plugin.name) || [],
+                interactions: {
+                    languageChanged: localStorage.getItem('lang'),
+                    themeToggled: localStorage.getItem('theme')
+                }
             };
 
             fetch('https://frosty-resonance-2301.bobbypanchal.workers.dev/', {
