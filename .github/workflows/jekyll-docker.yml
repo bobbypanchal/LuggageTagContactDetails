@@ -56,7 +56,7 @@ jobs:
           try:
             with smtplib.SMTP("smtp.mail.me.com", 587) as server:
               server.starttls()  # Upgrade to secure connection
-              server.login(sender, ICLOUD_APP_PASSWORD)
+              server.login(sender, "${{ secrets.ICLOUD_PASSWORD }}")
               server.sendmail(sender, recipient, msg.as_string())
               print("Email sent successfully!")
           except Exception as e:
