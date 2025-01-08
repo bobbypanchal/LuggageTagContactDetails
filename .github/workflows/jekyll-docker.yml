@@ -29,36 +29,59 @@ jobs:
         run: |
           echo "::set-output name=payload::${{ github.event.client_payload }}"
 
-      - name: Send email with payload
+      - name: Send email with formatted table
         env:
           ICLOUD_EMAIL: ${{ secrets.ICLOUD_EMAIL }}
-          ICLOUD_APP_PASSWORD: ${{ secrets.ICLOUD_PASSWORD }}
-
+          ICLOUD_PASSWORD: ${{ secrets.ICLOUD_PASSWORD }}
         run: |
           python <<EOF
           import smtplib
           from email.mime.text import MIMEText
+          from email.mime.multipart import MIMEMultipart
 
-          # Email sender and recipient
           sender = "${{ secrets.ICLOUD_EMAIL }}"
+          password = "${{ secrets.ICLOUD_PASSWORD }}"
           recipient = "bobbypanchal@me.com"
-
-          # Email subject and body
           subject = "Webhook Payload"
-          body = f"Payload received: ${{ steps.extract-payload.outputs.payload }}"
 
-          # Set up email
-          msg = MIMEText(body)
+          payload = ${GITHUB_EVENT_CLIENT_PAYLOAD}
+
+          # Convert payload to HTML table
+          table_rows = "".join(
+              f"<tr><td>{key}</td><td>{value}</td></tr>"
+              for key, value in payload.items()
+          )
+          html_body = f"""
+          <html>
+              <body>
+                  <p>Here is the received payload formatted as a table:</p>
+                  <table border="1" style="border-collapse: collapse; width: 100%;">
+                      <thead>
+                          <tr>
+                              <th>Key</th>
+                              <th>Value</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {table_rows}
+                      </tbody>
+                  </table>
+              </body>
+          </html>
+          """
+
+          msg = MIMEMultipart("alternative")
           msg["Subject"] = subject
           msg["From"] = sender
           msg["To"] = recipient
+          msg.attach(MIMEText(html_body, "html"))
 
           try:
-            with smtplib.SMTP("smtp.mail.me.com", 587) as server:
-              server.starttls()  # Upgrade to secure connection
-              server.login(sender, "${{ secrets.ICLOUD_PASSWORD }}")
-              server.sendmail(sender, recipient, msg.as_string())
-              print("Email sent successfully!")
+              with smtplib.SMTP("smtp.mail.me.com", 587) as server:
+                  server.starttls()
+                  server.login(sender, password)
+                  server.sendmail(sender, recipient, msg.as_string())
+                  print("Email sent successfully!")
           except Exception as e:
-            print(f"Failed to send email: {e}")
+              print(f"Failed to send email: {e}")
           EOF
