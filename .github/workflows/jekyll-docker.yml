@@ -1,4 +1,4 @@
-name: Webhook Payload Processor
+name: Webhook Payload Processor and Email
 
 on:
   repository_dispatch:
@@ -6,23 +6,63 @@ on:
       - trigger-email
 
 jobs:
-  process-payload:
+  process-and-email:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Log Received Payload
-        run: |
-          echo "Event Type: ${{ github.event.action }}"
-          echo "Payload: ${{ toJson(github.event.client_payload) }}"
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-      - name: Process Payload
+      - name: Install Dependencies
         run: |
-          echo "Processing the payload data..."
-          echo "Message: ${{ github.event.client_payload.message }}"
-          echo "Custom Key 1: ${{ github.event.client_payload.key1 }}"
-          echo "Custom Key 2: ${{ github.event.client_payload.key2 }}"
+          npm init -y
+          npm install nodemailer
 
-      # Add any additional steps you need to process the payload
+      - name: Create Email Script
+        run: |
+          cat <<EOL > send-email.js
+          const nodemailer = require('nodemailer');
+          const payload = ${JSON.stringify('${{ toJson(github.event.client_payload) }}')};
+
+          async function sendEmail() {
+            const transporter = nodemailer.createTransport({
+              service: 'iCloud', // Or your email service provider
+              auth: {
+                user: process.env.ICLOUD_EMAIL,
+                pass: process.env.ICLOUD_PASSWORD,
+              },
+            });
+
+            const formatTable = (payload) => {
+              let html = '<table border="1" style="border-collapse: collapse;">';
+              for (const key in payload) {
+                html += \`<tr><td style="padding: 8px;">\${key}</td><td style="padding: 8px;">\${payload[key]}</td></tr>\`;
+              }
+              html += '</table>';
+              return html;
+            };
+
+            const mailOptions = {
+              from: process.env.ICLOUD_EMAIL,
+              to: "bobbypanchal@me.com",
+              subject: "Webhook Payload Received",
+              html: \`<p>Here is the payload received:</p>\${formatTable(payload)}\`,
+            };
+
+            const info = await transporter.sendMail(mailOptions);
+            console.log('Email sent: ' + info.response);
+          }
+
+          sendEmail().catch(console.error);
+          EOL
+
+      - name: Send Email with Payload
+        run: node send-email.js
+        env:
+          ICLOUD_EMAIL: ${{ secrets.ICLOUD_EMAIL }}
+          ICLOUD_PASSWORD: ${{ secrets.ICLOUD_PASSWORD }}
