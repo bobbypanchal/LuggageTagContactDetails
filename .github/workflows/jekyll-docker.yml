@@ -1,55 +1,57 @@
-name: Send Webhook Payload via Email
+name: Send Webhook Payload via Email  # Workflow name
 
-on:
-  workflow_dispatch:
-  repository_dispatch:
+on:  # Specifies the events that trigger this workflow
+  workflow_dispatch:  # Allows manual triggering of the workflow
+  repository_dispatch:  # Allows triggering via custom webhook event
     types:
-      - webhook-event
+      - webhook-event  # Type of repository dispatch event that triggers the workflow
 
 jobs:
   process-and-email:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # The workflow will execute on the latest version of Ubuntu
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout code  # Step to check out the repository's code
+        uses: actions/checkout@v3  # GitHub Action to check out the repository code
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Set up Python  # Step to set up Python environment
+        uses: actions/setup-python@v4  # GitHub Action to set up Python
         with:
-          python-version: '3.x'
+          python-version: '3.x'  # Specifies the Python version to use
 
-      - name: Install dependencies
+      - name: Install dependencies  # Step to install required Python dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install pyyaml
+          python -m pip install --upgrade pip  # Upgrades pip to the latest version
+          pip install pyyaml  # Installs the `pyyaml` library
 
-      - name: Extract payload
-        id: extract-payload
+      - name: Extract payload  # Step to extract the payload from the event
+        id: extract-payload  # Assigns an ID to this step for referencing later
         run: |
-          echo "::set-output name=payload::${{ github.event.client_payload }}"
+          echo "::set-output name=payload::${{ github.event.client_payload }}"  # Outputs the payload as a step output
 
-      - name: Send email with formatted table
+      - name: Send email with formatted table  # Step to send the payload as an email
         env:
-          ICLOUD_EMAIL: ${{ secrets.ICLOUD_EMAIL }}
-          ICLOUD_PASSWORD: ${{ secrets.ICLOUD_PASSWORD }}
+          ICLOUD_EMAIL: ${{ secrets.ICLOUD_EMAIL }}  # Fetches the iCloud email from secrets
+          ICLOUD_PASSWORD: ${{ secrets.ICLOUD_PASSWORD }}  # Fetches the iCloud password from secrets
         run: |
-          python <<EOF
+          python <<EOF  # Runs the following Python script inline
           import smtplib
           from email.mime.text import MIMEText
           from email.mime.multipart import MIMEMultipart
           import json
 
+          # Email credentials and recipient details
           sender = "${{ secrets.ICLOUD_EMAIL }}"
           password = "${{ secrets.ICLOUD_PASSWORD }}"
-          recipient = "${{ secrets.ICLOUD_EMAIL }}"
-          subject = "A Luggage tag was scanned"
+          recipient = "${{ secrets.ICLOUD_EMAIL }}"  # Sends email to the same iCloud email
+          subject = "A Luggage tag was scanned"  # Subject of the email
 
+          # Load the JSON payload passed from the event
           payload = json.loads('''${{ toJson(github.event.client_payload) }}''')
 
-          # Convert payload to HTML table
+          # Generate an HTML table from the payload
           table_rows = "".join(
-              f"<tr><td>{key}</td><td>{value}</td></tr>"
+              f"<tr><td>{key}</td><td>{value}</td></tr>"  # Creates a table row for each key-value pair
               for key, value in payload.items()
           )
           html_body = f"""
@@ -69,20 +71,23 @@ jobs:
                   </table>
               </body>
           </html>
-          """
+          """  # Wraps the table in HTML for better email formatting
 
+          # Create the email message with an HTML body
           msg = MIMEMultipart("alternative")
-          msg["Subject"] = subject
-          msg["From"] = sender
-          msg["To"] = recipient
-          msg.attach(MIMEText(html_body, "html"))
+          msg["Subject"] = subject  # Sets the email subject
+          msg["From"] = sender  # Sets the sender address
+          msg["To"] = recipient  # Sets the recipient address
+          msg.attach(MIMEText(html_body, "html"))  # Attaches the HTML body to the email
 
           try:
+              # Connects to the iCloud SMTP server and sends the email
               with smtplib.SMTP("smtp.mail.me.com", 587) as server:
-                  server.starttls()
-                  server.login(sender, password)
-                  server.sendmail(sender, recipient, msg.as_string())
+                  server.starttls()  # Initiates TLS for secure communication
+                  server.login(sender, password)  # Logs in to the SMTP server
+                  server.sendmail(sender, recipient, msg.as_string())  # Sends the email
                   print("Email sent successfully!")
           except Exception as e:
+              # Prints an error message if the email fails to send
               print(f"Failed to send email: {e}")
           EOF
