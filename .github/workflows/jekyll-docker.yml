@@ -53,7 +53,7 @@ jobs:
           msg["To"] = recipient
 
           # Send email via iCloud SMTP server
-          with smtplib.SMTP_SSL("smtp.mail.me.com", 465) as server:
+          with smtplib.SMTP_SSL("smtp.mail.me.com", 587) as server:
               server.login(sender, "${{ secrets.ICLOUD_APP_PASSWORD }}")
               server.sendmail(sender, recipient, msg.as_string())
           EOF
