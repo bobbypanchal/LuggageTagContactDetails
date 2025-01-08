@@ -51,18 +51,18 @@ jobs:
 
           # Generate an HTML table from the payload
           table_rows = "".join(
-              f"<tr><td>{key}</td><td>{value}</td></tr>"  # Creates a table row for each key-value pair
+              f"<tr><td>{key}</td><td>{value}</td></tr>"
               for key, value in reversed(payload.items())
           )
           html_body = f"""
           <html>
-              <body>
-                  <p>Here is the received payload formatted as a table:</p>
-                  <table border="1" style="border-collapse: collapse; width: 100%;">
+              <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: #333;">
+                  <p style="font-size: 16px; line-height: 1.5; color: #555;">Here is the received payload formatted as a table:</p>
+                  <table style="border-collapse: collapse; width: 100%; max-width: 600px; margin: 20px auto; border: 1px solid #ddd; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;">
                       <thead>
-                          <tr>
-                              <th>Key</th>
-                              <th>Value</th>
+                          <tr style="background-color: #f5f5f5; border-bottom: 2px solid #ddd;">
+                              <th style="text-align: left; padding: 12px 16px; font-size: 16px; font-weight: 600; color: #444;">Key</th>
+                              <th style="text-align: left; padding: 12px 16px; font-size: 16px; font-weight: 600; color: #444;">Value</th>
                           </tr>
                       </thead>
                       <tbody>
@@ -71,23 +71,22 @@ jobs:
                   </table>
               </body>
           </html>
-          """  # Wraps the table in HTML for better email formatting
+          """
 
           # Create the email message with an HTML body
           msg = MIMEMultipart("alternative")
-          msg["Subject"] = subject  # Sets the email subject
-          msg["From"] = sender  # Sets the sender address
-          msg["To"] = recipient  # Sets the recipient address
-          msg.attach(MIMEText(html_body, "html"))  # Attaches the HTML body to the email
+          msg["Subject"] = subject
+          msg["From"] = sender
+          msg["To"] = recipient
+          msg.attach(MIMEText(html_body, "html"))
 
           try:
               # Connects to the iCloud SMTP server and sends the email
               with smtplib.SMTP("smtp.mail.me.com", 587) as server:
-                  server.starttls()  # Initiates TLS for secure communication
-                  server.login(sender, password)  # Logs in to the SMTP server
-                  server.sendmail(sender, recipient, msg.as_string())  # Sends the email
+                  server.starttls()
+                  server.login(sender, password)
+                  server.sendmail(sender, recipient, msg.as_string())
                   print("Email sent successfully!")
           except Exception as e:
-              # Prints an error message if the email fails to send
               print(f"Failed to send email: {e}")
           EOF
