@@ -458,6 +458,9 @@ function applyTheme(theme) {
                 }
             };
 
+            console.log('Payload being sent:', JSON.stringify(payload));
+
+
             fetch('https://frosty-resonance-2301.bobbypanchal.workers.dev/', {
                 method: 'POST',
                 headers: {
