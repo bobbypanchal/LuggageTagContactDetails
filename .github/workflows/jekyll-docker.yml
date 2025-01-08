@@ -28,30 +28,11 @@ jobs:
         id: extract-payload
         run: |
           echo "::set-output name=payload::${{ github.event.client_payload }}"
-          
-      - name: Test SMTP Connection
-        run: |
-          python <<EOF
-          import socket
-
-          def test_smtp_connection():
-            try:
-              print("Testing connection to smtp.mail.me.com on port 587...")
-              socket.create_connection(("smtp.mail.me.com", 587), timeout=10)
-              print("Connection successful!")
-            except Exception as e:
-              print(f"Connection failed: {e}")
-            
-          if __name__ == "__main__":
-            test_smtp_connection()
-          EOF
 
       - name: Send email with payload
         env:
           ICLOUD_EMAIL: ${{ secrets.ICLOUD_EMAIL }}
           ICLOUD_APP_PASSWORD: ${{ secrets.ICLOUD_PASSWORD }}
-          ACTIONS_RUNNER_DEBUG: true
-          ACTIONS_STEP_DEBUG: true
 
         run: |
           python <<EOF
@@ -72,8 +53,12 @@ jobs:
           msg["From"] = sender
           msg["To"] = recipient
 
-          # Send email via iCloud SMTP server
-          with smtplib.SMTP_SSL("smtp.mail.me.com", 465) as server:
-              server.login(sender, "${{ secrets.ICLOUD_PASSWORD }}")
+          try:
+            with smtplib.SMTP("smtp.mail.me.com", 587) as server:
+              server.starttls()  # Upgrade to secure connection
+              server.login(sender, password)
               server.sendmail(sender, recipient, msg.as_string())
+              print("Email sent successfully!")
+          except Exception as e:
+            print(f"Failed to send email: {e}")
           EOF
