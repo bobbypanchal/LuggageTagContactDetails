@@ -37,7 +37,7 @@ jobs:
           def test_smtp_connection():
             try:
               print("Testing connection to smtp.mail.me.com on port 465...")
-              socket.create_connection(("smtp.mail.me.com", 465), timeout=10)
+              socket.create_connection(("smtp.mail.me.com", 587), timeout=10)
               print("Connection successful!")
             except Exception as e:
               print(f"Connection failed: {e}")
