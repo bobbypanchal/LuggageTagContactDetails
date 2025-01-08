@@ -32,7 +32,7 @@ jobs:
       - name: Send email with payload
         env:
           ICLOUD_EMAIL: ${{ secrets.ICLOUD_EMAIL }}
-          ICLOUD_APP_PASSWORD: ${{ secrets.ICLOUD_APP_PASSWORD }}
+          ICLOUD_APP_PASSWORD: ${{ secrets.ICLOUD_PASSWORD }}
         run: |
           python <<EOF
           import smtplib
@@ -54,6 +54,6 @@ jobs:
 
           # Send email via iCloud SMTP server
           with smtplib.SMTP_SSL("smtp.mail.me.com", 587) as server:
-              server.login(sender, "${{ secrets.ICLOUD_APP_PASSWORD }}")
+              server.login(sender, "${{ secrets.ICLOUD_PASSWORD }}")
               server.sendmail(sender, recipient, msg.as_string())
           EOF
