@@ -42,7 +42,7 @@ jobs:
 
           sender = "${{ secrets.ICLOUD_EMAIL }}"
           password = "${{ secrets.ICLOUD_PASSWORD }}"
-          recipient = "${{ secret.ICLOUD_EMAIL }}"
+          recipient = "${{ secrets.ICLOUD_EMAIL }}"
           subject = "A Luggage tag was scanned"
 
           payload = json.loads('''${{ toJson(github.event.client_payload) }}''')
