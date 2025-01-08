@@ -38,13 +38,14 @@ jobs:
           import smtplib
           from email.mime.text import MIMEText
           from email.mime.multipart import MIMEMultipart
+          import json
 
           sender = "${{ secrets.ICLOUD_EMAIL }}"
           password = "${{ secrets.ICLOUD_PASSWORD }}"
           recipient = "bobbypanchal@me.com"
           subject = "Webhook Payload"
 
-          payload = ${GITHUB_EVENT_CLIENT_PAYLOAD}
+          payload = json.loads('''${{ toJson(github.event.client_payload) }}''')
 
           # Convert payload to HTML table
           table_rows = "".join(
